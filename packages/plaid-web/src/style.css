@@ -1,0 +1,31 @@
+:root { font-family: system-ui, sans-serif; color: #172d2a; background: #f7f8f4; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 900px; margin: auto; padding: 0 32px 60px; }
+header { height: 96px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #dce3dc; }
+.brand { color: inherit; font-weight: 700; font-size: 20px; text-decoration: none; letter-spacing: -.6px; }
+.intro { margin: 64px 0 40px; }
+.eyebrow { text-transform: uppercase; letter-spacing: 2px; font-size: 11px; font-weight: 700; color: #526c61; }
+h1 { font-size: clamp(30px, 5vw, 46px); font-weight: 500; letter-spacing: -1.8px; margin: 14px 0; }
+h2 { font-size: 20px; font-weight: 600; margin: 0 0 12px; }
+p { line-height: 1.65; }
+.intro > p:last-child { color: #63756b; max-width: 550px; }
+.toolbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 20px; }
+.badge { font-size: 12px; border-radius: 5px; background: #e9eddf; padding: 8px 12px; color: #536344; }
+.badge.production { background: #e0eee8; color: #22694f; }
+button { font: inherit; font-size: 14px; background: #1e5a46; border: 1px solid #1e5a46; border-radius: 7px; padding: 12px 18px; color: white; cursor: pointer; }
+button:hover { background: #164532; }
+button:disabled { opacity: .55; cursor: wait; }
+button:focus-visible, a:focus-visible { outline: 3px solid #bd8955; outline-offset: 4px; }
+button.secondary { background: transparent; color: #1e5a46; border-color: #bacfc1; margin-top: 12px; }
+button.quiet { background: none; border-color: transparent; color: #526c61; }
+.connections { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+.card { border: 1px solid #dce3dc; background: #fff; border-radius: 12px; padding: 28px; }
+.card.empty { padding: 48px 32px; }
+.card p { color: #526c61; font-size: 14px; }
+.muted { color: #7a8780 !important; font-size: 12px !important; }
+code { overflow-wrap: anywhere; }
+.notice { padding: 14px 18px; border-radius: 7px; background: #e5efe8; font-size: 14px; }
+.notice.error { background: #f8e9e3; color: #883d29; }
+.footnote { font-size: 12px; color: #738277; max-width: 570px; margin-top: 28px; }
+@media (max-width: 520px) { main { padding: 0 20px 40px; } header { height: 76px; } .intro { margin-top: 40px; } .toolbar { align-items: flex-start; flex-direction: column; } }

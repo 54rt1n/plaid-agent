@@ -1,0 +1,26 @@
+{
+  "name": "@plaid-agent/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "playwright test",
+    "build": "npm run check && vite build",
+    "generate:api": "uv run --project ../.. python ../../scripts/export_web_schema.py && openapi-typescript schema.json -o src/lib/api.generated.ts"
+  },
+  "dependencies": {
+    "svelte": ">=5.57.3 <6"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.2",
+    "@sveltejs/vite-plugin-svelte": ">=7.3.1 <8",
+    "@types/plaid-link": ">=2 <3",
+    "openapi-typescript": ">=7 <8",
+    "svelte-check": ">=4.7 <5",
+    "typescript": ">=5.9 <6",
+    "vite": ">=8.3.6 <9"
+  },
+  "license": "SEE LICENSE IN LICENSE"
+}

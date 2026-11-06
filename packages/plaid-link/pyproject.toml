@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plaid-link"
+version = "0.1.0"
+description = "Single HTTP service for the Plaid Agent website and Link API"
+requires-python = ">=3.11,<3.14"
+license = "LicenseRef-PolyForm-Internal-Use-1.0.0"
+license-files = ["LICENSE", "THIRD_PARTY_NOTICES"]
+dependencies = ["plaid-core>=0.1,<0.2", "fastapi>=0.115,<1", "uvicorn>=0.34,<1", "httpx>=0.28,<0.29"]
+
+[tool.uv.sources]
+plaid-core = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plaid_link"]
+exclude = ["src/plaid_link/static"]
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "pyproject.toml", "hatch_build.py", "LICENSE", "THIRD_PARTY_NOTICES"]
+exclude = ["src/plaid_link/static"]

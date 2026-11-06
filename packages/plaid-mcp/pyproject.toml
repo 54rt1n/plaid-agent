@@ -1,0 +1,21 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plaid-mcp"
+version = "0.1.0"
+description = "Financial query and synchronization MCP adapter for Plaid Agent"
+requires-python = ">=3.11,<3.14"
+license = "LicenseRef-PolyForm-Internal-Use-1.0.0"
+license-files = ["LICENSE"]
+dependencies = ["plaid-core>=0.1,<0.2", "mcp>=1.20,<2"]
+
+[project.scripts]
+plaid-agent-mcp = "plaid_mcp.server:main"
+
+[tool.uv.sources]
+plaid-core = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plaid_mcp"]

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plaid-cli"
+version = "0.1.0"
+description = "Management and reporting CLI for Plaid Agent"
+requires-python = ">=3.11,<3.14"
+license = "LicenseRef-PolyForm-Internal-Use-1.0.0"
+license-files = ["LICENSE"]
+dependencies = ["plaid-core>=0.1,<0.2", "plaid-link>=0.1,<0.2"]
+
+[project.scripts]
+plaid-agent = "plaid_cli.launcher:main"
+
+[tool.uv.sources]
+plaid-core = { workspace = true }
+plaid-link = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plaid_cli"]

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plaid-core"
+version = "0.1.0"
+description = "Typed personal-finance application, Plaid integration and encrypted local storage"
+requires-python = ">=3.11,<3.14"
+license = "LicenseRef-PolyForm-Internal-Use-1.0.0"
+license-files = ["LICENSE"]
+dependencies = ["pydantic>=2.10,<3", "httpx>=0.28,<0.29", "cryptography>=44,<47", "python-dotenv>=1,<2", "simplejson>=3.20,<4"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plaid_core"]

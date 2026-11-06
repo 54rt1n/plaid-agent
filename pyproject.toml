@@ -1,0 +1,34 @@
+[project]
+name = "plaid-agent-workspace"
+version = "0.1.0"
+requires-python = ">=3.11,<3.14"
+license = "LicenseRef-PolyForm-Internal-Use-1.0.0"
+license-files = ["LICENSE"]
+dependencies = ["plaid-core", "plaid-cli", "plaid-link", "plaid-mcp"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["packages/*"]
+exclude = ["packages/plaid-web"]
+
+[tool.uv.sources]
+plaid-core = { workspace = true }
+plaid-cli = { workspace = true }
+plaid-link = { workspace = true }
+plaid-mcp = { workspace = true }
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "pytest-asyncio>=1,<2", "ruff>=0.15,<0.16", "build>=1,<2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "B", "UP"]
