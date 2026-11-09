@@ -9,8 +9,8 @@ from datetime import date
 from functools import wraps
 from pathlib import Path
 
-from mcp.server.fastmcp import FastMCP
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp.server.mcpserver import MCPServer
+from mcp.server.mcpserver.exceptions import ToolError
 from plaid_core.application import Finance
 from plaid_core.config import default_data_dir
 from plaid_core.errors import FinanceError
@@ -57,8 +57,8 @@ def fit_page(page: Transactions | Coverage | Snapshots):
     return page
 
 
-def create_server(root: Path, *, env_file: Path | None = None) -> FastMCP:
-    server = FastMCP("plaid-agent", log_level="WARNING")
+def create_server(root: Path, *, env_file: Path | None = None) -> MCPServer:
+    server = MCPServer("plaid-agent", log_level="WARNING")
 
     def tool(fn: Callable):
         @wraps(fn)

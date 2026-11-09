@@ -173,19 +173,19 @@ def test_mcp_real_process_typed_queries_and_restarts(app, tmp_path, timestamp):
                     ("list_liabilities", {}),
                 ]:
                     result = await client.call_tool(name, arguments)
-                    assert not result.isError, result
-                    assert result.structuredContent is not None
+                    assert not result.is_error, result
+                    assert result.structured_content is not None
                     assert "fake-token" not in str(result)
                 invalid = await client.call_tool("query_transactions", {"query": {"limit": 0}})
-                assert invalid.isError
+                assert invalid.is_error
                 status = await client.call_tool("finance_status", {})
-                assert status.structuredContent["data_dir"] == str(tmp_path)
-                assert status.structuredContent["coverage"]["records"][0]["count"] == 1
+                assert status.structured_content["data_dir"] == str(tmp_path)
+                assert status.structured_content["coverage"]["records"][0]["count"] == 1
                 combined = await client.call_tool("sync_transactions", {"all_connections": True})
-                assert not combined.isError
-                assert combined.structuredContent["outcome"] == "failed"
+                assert not combined.is_error
+                assert combined.structured_content["outcome"] == "failed"
                 assert (
-                    "Set PLAID_CLIENT_ID" in combined.structuredContent["connections"][0]["error"]
+                    "Set PLAID_CLIENT_ID" in combined.structured_content["connections"][0]["error"]
                 )
                 connections = await client.call_tool("list_connections", {})
                 assert "fixture" in str(connections)

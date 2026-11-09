@@ -5,7 +5,7 @@ from datetime import timedelta
 import httpx
 import pytest
 from conftest import sync_page, transaction_payload
-from mcp.server.fastmcp.exceptions import ToolError
+from mcp.server.mcpserver.exceptions import ToolError
 from plaid_cli import main as cli
 from plaid_core.application import Finance
 from plaid_core.models import Account, AccountsSnapshot, Connection, Transaction
@@ -29,16 +29,19 @@ async def test_mcp_sync_all_and_coverage_preserve_single_result_shape(
     assert len(tools) == 13
     # MCP output schemas must declare an object root, including the sync union.
     for tool in tools:
-        if tool.outputSchema is not None:
-            assert tool.outputSchema["type"] == "object", tool.name
+        if tool.output_schema is not None:
+            assert tool.output_schema["type"] == "object", tool.name
     fake.sync = [sync_page([transaction_payload("first")])]
-    _, single = await server.call_tool("sync_transactions", {"connection_id": "first"})
+    single_result = await server.call_tool("sync_transactions", {"connection_id": "first"})
+    single = single_result.structured_content
     assert single["connection_id"] == "first" and single["added"] == 1
     assert "result" not in single
     fake.sync = [sync_page(), httpx.Response(400, json={"error_code": "ITEM_LOGIN_REQUIRED"})]
-    _, combined = await server.call_tool("sync_transactions", {"all_connections": True})
+    combined_result = await server.call_tool("sync_transactions", {"all_connections": True})
+    combined = combined_result.structured_content
     assert combined["outcome"] == "partial" and combined["eligible_connections"] == 2
-    _, status = await server.call_tool("finance_status", {})
+    status_result = await server.call_tool("finance_status", {})
+    status = status_result.structured_content
     assert status["data_dir"] == str(tmp_path)
     assert sum(row["count"] for row in status["coverage"]["records"]) == 1
     with pytest.raises(ToolError, match="Connection not found"):
@@ -80,9 +83,10 @@ async def test_mcp_large_reads_keep_complete_pages_and_refuse_oversize_record(
     offset = 0
     seen = set()
     while offset is not None:
-        _, page = await server.call_tool(
+        page_result = await server.call_tool(
             "query_transactions", {"query": {"limit": 100, "offset": offset}}
         )
+        page = page_result.structured_content
         assert len(json.dumps(page, ensure_ascii=False).encode()) < 9000
         assert page["total"] == 12 and page["records"]
         seen.update(item["id"] for item in page["records"])
@@ -145,9 +149,10 @@ async def test_mcp_snapshot_pages_fit_and_large_single_snapshot_uses_cli(app, tm
     server = mcp.create_server(tmp_path)
     offset, seen = 0, set()
     while offset is not None:
-        _, page = await server.call_tool(
+        page_result = await server.call_tool(
             "query_snapshots", {"query": {"limit": 100, "offset": offset}}
         )
+        page = page_result.structured_content
         assert page["total"] == 12
         seen.update(row["id"] for row in page["records"])
         offset = page["next_offset"]
